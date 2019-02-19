@@ -1,0 +1,3 @@
+rootProject.name = 'rnNavigationV3Components'
+
+include ':app'
