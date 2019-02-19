@@ -11,15 +11,15 @@
  *                - Tab 2 - ProfileStack
  *                - Tab 3 - SettingsStack
  */
-import React, {Component} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React, { Component } from 'react';
+import { Text, View } from 'react-native';
 
 
 import WelcomeScreen from './components/screens/WelcomeScreen';
+import DashboardScreen from './components/screens/DashboardScreen';
 import Feed from './components/screens/tab/Feed';
 import Profile from './components/screens/tab/Profile';
 import Settings from './components/screens/tab/Settings';
-// import DashboardScreen from './components/screens/DashboardScreen';
 
 import {
   createSwitchNavigator,
@@ -43,23 +43,79 @@ const Detail = props => (
   </View>
 );
 
+
 // 6. Create FeedStak containing Feed tab page plus Detail page
-const FeedStack = createStackNavigator({
-  Feed: {
-    screen: Feed
+const FeedStack = createStackNavigator(
+  {
+    Feed: {
+      screen: Feed,
+      navigationOptions: ({ navigation }) => {
+        return {
+          headerTitle: 'Feed',
+          headerLeft: (
+            <Icon style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="md-menu" size={30} />
+          )
+        };
+      }
+    },
+    Detail: {
+      screen: Detail
+    }
   },
-  Detail: Detail
-});
+  {
+    defaultNavigationOptions: {
+      gesturesEnabled: false
+    }
+  }
+);
+
+// Create ProfileStack
+const ProfileStack = createStackNavigator(
+  {
+    Feed: {
+      screen: Profile,
+      navigationOptions: ({ navigation }) => {
+        return {
+          headerTitle: 'Profile',
+          headerLeft: (
+            <Icon style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="md-menu" size={30} />
+          )
+        };
+      }
+    }
+  }
+);
+
+// Create SettingsStack
+const SettingsStack = createStackNavigator(
+  {
+    Feed: {
+      screen: Settings,
+      navigationOptions: ({ navigation }) => {
+        return {
+          headerTitle: 'Settings',
+          headerLeft: (
+            <Icon style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="md-menu" size={30} />
+          )
+        };
+      }
+    }
+  }
+);
+// const ProfileStack = createStackNavigator...
+
+// const SettingsStack = createStackNavigator...
 
 // 4. Create the BottomTabNavigator
 const DashboardTabNavigator = createBottomTabNavigator({
   FeedStack,
-  Profile,
-  Settings
+  ProfileStack,
+  SettingsStack
 }, {
-  navigationOptions:({navigation}) => {
+  navigationOptions:({ navigation }) => {
     const {routeName} = navigation.state.routes[navigation.state.index];
     return {
+      header: null,
       headerTitle: routeName
     }
   }
@@ -67,9 +123,11 @@ const DashboardTabNavigator = createBottomTabNavigator({
 
 // 5. Create DashboardTabNavigator
 const DashboardStackNavigator = createStackNavigator({
+
     DashboardTabNavigator: DashboardTabNavigator
-}, {
-  defaultNavigationOptions:({navigation})=>{
+
+  }, {
+  defaultNavigationOptions:({ navigation }) => {
     return{
       headerLeft:(
         <Icon
@@ -77,7 +135,7 @@ const DashboardStackNavigator = createStackNavigator({
           onPress={() => navigation.openDrawer()}
           name='md-menu' size={30} />
       )
-    }
+    };
   }
 });
 
@@ -96,13 +154,5 @@ const AppSwitchNavigator = createSwitchNavigator({
 const AppContainer = createAppContainer(AppSwitchNavigator);
 
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-});
 
-export default App
+export default App;
