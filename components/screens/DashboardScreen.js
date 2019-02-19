@@ -1,4 +1,5 @@
-
+import React, {Component} from 'react';
+import {Text, View} from 'react-native';
 class DashboardScreen extends Component{
     render(){
         return (
@@ -8,3 +9,5 @@ class DashboardScreen extends Component{
         );
     }
 }
+
+export default DashboardScreen;

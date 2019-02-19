@@ -1,3 +1,9 @@
+import React, { Component } from 'react';
+import {
+    View,
+    Text,
+    StyleSheet
+} from "react-native";
 
 class Settings extends Component{
     render(){
@@ -8,3 +14,5 @@ class Settings extends Component{
         );
     }
 }
+
+export default Settings;

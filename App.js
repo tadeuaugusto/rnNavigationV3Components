@@ -1,10 +1,28 @@
+/**
+ * - 1/2. AppAppSwitchNavigator
+ *    - WelcomeScreen
+ *      - Login Button
+ *      - Signup Button
+ *    - 3. AppDrawerNavigator
+ *        - 5. Dashboard - DashboardStackNavigator
+ *          (needed for header and to change the header based on the tab)
+ *            - 4. DashboardTabNavigator
+ *                - Tab 1 - FeedStack
+ *                - Tab 2 - ProfileStack
+ *                - Tab 3 - SettingsStack
+ */
 import React, {Component} from 'react';
-import {Button, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 
 
 import WelcomeScreen from './components/screens/WelcomeScreen';
+import Feed from './components/screens/tab/Feed';
+import Profile from './components/screens/tab/Profile';
+import Settings from './components/screens/tab/Settings';
+// import DashboardScreen from './components/screens/DashboardScreen';
+
 import {
-  createSwitchNavigation,
+  createSwitchNavigator,
   createAppContainer,
   createDrawerNavigator,
   createBottomTabNavigator,
@@ -18,9 +36,24 @@ class App extends Component {
   }
 }
 
+// 7. Feed Details
+const Detail = props => (
+  <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <Text>Detail</Text>
+  </View>
+);
+
+// 6. Create FeedStak containing Feed tab page plus Detail page
+const FeedStack = createStackNavigator({
+  Feed: {
+    screen: Feed
+  },
+  Detail: Detail
+});
+
 // 4. Create the BottomTabNavigator
 const DashboardTabNavigator = createBottomTabNavigator({
-  Feed,
+  FeedStack,
   Profile,
   Settings
 }, {
@@ -39,7 +72,7 @@ const DashboardStackNavigator = createStackNavigator({
   defaultNavigationOptions:({navigation})=>{
     return{
       headerLeft:(
-        <Icon 
+        <Icon
           style={{paddingLeft: 10}}
           onPress={() => navigation.openDrawer()}
           name='md-menu' size={30} />
@@ -53,14 +86,14 @@ const AppDrawerNavigator = createDrawerNavigator({
   Dashboard: {screen: DashboardStackNavigator}
 });
 
-// 1. Create the AppSwitchNavigation (Welcome, Dashboard)
-const AppSwitchNavigation = createSwitchNavigation({
+// 1. Create the AppSwitchNavigator (Welcome, Dashboard)
+const AppSwitchNavigator = createSwitchNavigator({
   Welcome: {screen: WelcomeScreen},
-  Dashboard: {screen: DashboardScreen}
+  Dashboard: {screen: AppDrawerNavigator}
 });
 
 // 2. Create the AppContainer and include AppSwithNavigation
-const AppContainer = createAppContainer(AppSwitchNavigation);
+const AppContainer = createAppContainer(AppSwitchNavigator);
 
 
 const styles = StyleSheet.create({
@@ -72,4 +105,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class App
+export default App
